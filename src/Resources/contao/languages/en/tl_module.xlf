@@ -1,0 +1,15 @@
+<?xml version="1.0" ?><xliff version="1.1">
+  <file datatype="php" original="src/Resources/contao/languages/en/tl_module.php" source-language="en">
+    <body>
+      <trans-unit id="tl_module.addSocialTags.0">
+        <source>Activating OpenGraph meta data</source>
+      </trans-unit>
+      <trans-unit id="tl_module.addSocialTags.1">
+        <source>Here you can activate OpenGraph metadata for exposés.</source>
+      </trans-unit>
+      <trans-unit id="tl_module.social_tags_legend">
+        <source>OpenGraph meta data</source>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
