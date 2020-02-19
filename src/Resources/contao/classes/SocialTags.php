@@ -56,18 +56,20 @@ class SocialTags extends \Controller
         $type = 'image/' . strtolower(FilesHelper::fileExt($picture['src']));
         $width = $picture['width'];
         $height = $picture['height'];
-        $description = $realEstate->getTexts(['dreizeiler'])['dreizeiler']['value'] ? $realEstate->getTexts(['dreizeiler'])['dreizeiler']['value'] : '';
+        $url = $base . Environment::get('request');
+        $description = $realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'] ? substr($realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'], 0, 200).'...' : '';
+
+        /** @var \PageModel $objPage */
+        global $objPage;
+        $pageDetails = $objPage->loadDetails();
 
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:title" content="'.$realEstate->getTitle().'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image" content="'.$imageUrl.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:type" content="'.$type.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:width" content="'.$width.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:height" content="'.$height.'">';
-        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:url" content="'.$base.'">';
-
-        if ($description)
-        {
-            $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:description" content="'.$description.'">';
-        }
+        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:url" content="'.$url.'">';
+        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:description" content="'.$description.'">';
+        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:site_name" content="'.$pageDetails->rootTitle.'">';
     }
 }
