@@ -12,6 +12,7 @@ namespace ContaoEstateManager\ExposeSocialTags;
 
 use Contao\Environment;
 use ContaoEstateManager\FilesHelper;
+use ContaoEstateManager\RealEstate;
 
 class SocialTags extends \Controller
 {
@@ -20,15 +21,17 @@ class SocialTags extends \Controller
      * Set OpenGraph meta tags
      *
      * @param $objTemplate
-     * @param $realEstate
+     * @param $objRealEstate
      * @param $context
      */
-    public function setSocialTags(&$objTemplate, $realEstate, $context)
+    public function setSocialTags(&$objTemplate, $objRealEstate, $context)
     {
         if (!$context->addSocialTags)
         {
             return;
         }
+
+        $realEstate = new RealEstate($objRealEstate);
 
         $objFile = \FilesModel::findOneByUuid($realEstate->getMainImage());
 
