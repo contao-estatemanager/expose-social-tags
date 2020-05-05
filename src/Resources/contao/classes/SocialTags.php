@@ -10,11 +10,14 @@
 
 namespace ContaoEstateManager\ExposeSocialTags;
 
+use Contao\Controller;
 use Contao\Environment;
+use Contao\FilesModel;
+use Contao\StringUtil;
 use ContaoEstateManager\FilesHelper;
 use ContaoEstateManager\RealEstate;
 
-class SocialTags extends \Controller
+class SocialTags extends Controller
 {
 
     /**
@@ -33,7 +36,7 @@ class SocialTags extends \Controller
 
         $realEstate = new RealEstate($objRealEstate);
 
-        $objFile = \FilesModel::findOneByUuid($realEstate->getMainImage());
+        $objFile = FilesModel::findOneByUuid($realEstate->getMainImage());
 
         $arrData = array
         (
@@ -42,7 +45,7 @@ class SocialTags extends \Controller
 
         if ($context->imgSize != '')
         {
-            $size = \StringUtil::deserialize($context->imgSize);
+            $size = StringUtil::deserialize($context->imgSize);
 
             if ($size[0] > 0 || $size[1] > 0 || is_numeric($size[2]))
             {
