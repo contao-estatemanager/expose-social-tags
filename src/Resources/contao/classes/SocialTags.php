@@ -19,7 +19,6 @@ use ContaoEstateManager\RealEstate;
 
 class SocialTags extends Controller
 {
-
     /**
      * Set OpenGraph meta tags
      *
@@ -27,7 +26,7 @@ class SocialTags extends Controller
      * @param $objRealEstate
      * @param $context
      */
-    public function setSocialTags(&$objTemplate, $objRealEstate, $context)
+    public function setSocialTags(&$objTemplate, $objRealEstate, $context): void
     {
         if (!$context->addSocialTags)
         {
@@ -36,7 +35,7 @@ class SocialTags extends Controller
 
         $realEstate = new RealEstate($objRealEstate);
 
-        $objFile = FilesModel::findOneByUuid($realEstate->getMainImage());
+        $objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid());
 
         $arrData = array
         (
@@ -63,13 +62,20 @@ class SocialTags extends Controller
         $width = $picture['width'];
         $height = $picture['height'];
         $url = $base . Environment::get('request');
-        $description = $realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'] ? substr($realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'], 0, 200).'...' : '';
+        $arrTexts = $realEstate->getTexts(['objektbeschreibung'], 200);
 
-        /** @var \PageModel $objPage */
+        $description = '';
+
+        if(isset($arrTexts['objektbeschreibung']))
+        {
+            $description = $arrTexts['objektbeschreibung']['value'];
+        }
+
+        /** @var Contao\PageModel $objPage */
         global $objPage;
         $pageDetails = $objPage->loadDetails();
 
-        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:title" content="'.$realEstate->getTitle().'">';
+        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:title" content="'.$realEstate->title.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image" content="'.$imageUrl.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:type" content="'.$type.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:width" content="'.$width.'">';
