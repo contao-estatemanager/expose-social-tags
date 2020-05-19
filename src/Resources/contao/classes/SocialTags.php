@@ -13,6 +13,7 @@ namespace ContaoEstateManager\ExposeSocialTags;
 use Contao\Controller;
 use Contao\Environment;
 use Contao\FilesModel;
+use Contao\PageModel;
 use Contao\StringUtil;
 use ContaoEstateManager\FilesHelper;
 use ContaoEstateManager\RealEstate;
@@ -71,7 +72,7 @@ class SocialTags extends Controller
             $description = $arrTexts['objektbeschreibung']['value'];
         }
 
-        /** @var Contao\PageModel $objPage */
+        /** @var PageModel $objPage */
         global $objPage;
         $pageDetails = $objPage->loadDetails();
 
