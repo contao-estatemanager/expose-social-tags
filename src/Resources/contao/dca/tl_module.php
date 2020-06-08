@@ -15,10 +15,13 @@ Contao\CoreBundle\DataContainer\PaletteManipulator::create()
     ->applyToPalette('realEstateExpose', 'tl_module')
 ;
 
-$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][]   = 'addSocialTags';
+// Add selector
+$GLOBALS['TL_DCA']['tl_module']['palettes']['__selector__'][] = 'addSocialTags';
+
+// Add subpalette
 $GLOBALS['TL_DCA']['tl_module']['subpalettes']['addSocialTags'] = 'imgSize';
 
-
+// Add field
 $GLOBALS['TL_DCA']['tl_module']['fields']['addSocialTags'] = array
 (
     'label'                   => &$GLOBALS['TL_LANG']['tl_module']['addSocialTags'],

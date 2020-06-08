@@ -10,27 +10,33 @@
 
 namespace ContaoEstateManager\ExposeSocialTags;
 
+use Contao\Controller;
 use Contao\Environment;
+use Contao\FilesModel;
+use Contao\PageModel;
+use Contao\StringUtil;
 use ContaoEstateManager\FilesHelper;
+use ContaoEstateManager\RealEstate;
 
-class SocialTags extends \Controller
+class SocialTags extends Controller
 {
-
     /**
      * Set OpenGraph meta tags
      *
      * @param $objTemplate
-     * @param $realEstate
+     * @param $objRealEstate
      * @param $context
      */
-    public function setSocialTags(&$objTemplate, $realEstate, $context)
+    public function setSocialTags(&$objTemplate, $objRealEstate, $context): void
     {
         if (!$context->addSocialTags)
         {
             return;
         }
 
-        $objFile = \FilesModel::findOneByUuid($realEstate->getMainImage());
+        $realEstate = new RealEstate($objRealEstate);
+
+        $objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid());
 
         $arrData = array
         (
@@ -39,7 +45,7 @@ class SocialTags extends \Controller
 
         if ($context->imgSize != '')
         {
-            $size = \StringUtil::deserialize($context->imgSize);
+            $size = StringUtil::deserialize($context->imgSize);
 
             if ($size[0] > 0 || $size[1] > 0 || is_numeric($size[2]))
             {
@@ -57,13 +63,20 @@ class SocialTags extends \Controller
         $width = $picture['width'];
         $height = $picture['height'];
         $url = $base . Environment::get('request');
-        $description = $realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'] ? substr($realEstate->getTexts(['objektbeschreibung'])['objektbeschreibung']['value'], 0, 200).'...' : '';
+        $arrTexts = $realEstate->getTexts(['objektbeschreibung'], 200);
 
-        /** @var \PageModel $objPage */
+        $description = '';
+
+        if(isset($arrTexts['objektbeschreibung']))
+        {
+            $description = $arrTexts['objektbeschreibung']['value'];
+        }
+
+        /** @var PageModel $objPage */
         global $objPage;
         $pageDetails = $objPage->loadDetails();
 
-        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:title" content="'.$realEstate->getTitle().'">';
+        $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:title" content="'.$realEstate->title.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image" content="'.$imageUrl.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:type" content="'.$type.'">';
         $GLOBALS['TL_HEAD'][] = '<meta prefix="og: http://ogp.me/ns#" property="og:image:width" content="'.$width.'">';
