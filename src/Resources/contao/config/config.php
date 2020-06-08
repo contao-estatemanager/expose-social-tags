@@ -9,4 +9,4 @@
  */
 
 // HOOKS
-$GLOBALS['TL_HOOKS']['compileRealEstateExpose'][] = array('ContaoEstateManager\\ExposeSocialTags\\SocialTags', 'setSocialTags');
+$GLOBALS['TL_HOOKS']['compileRealEstateExpose'][] = array('ContaoEstateManager\ExposeSocialTags\SocialTags', 'setSocialTags');
