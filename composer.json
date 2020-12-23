@@ -4,7 +4,7 @@
   "description":"Exposé Social Tags Extension for Contao EstateManager",
   "keywords":["contao","immobilien","manager","property","realestate","social","meta","tags","expose"],
   "homepage":"https://www.contao-estatemanager.com/",
-  "license":"proprietary",
+  "license":"AGPL-3.0-or-later",
   "authors":[
     {
       "name":"Daniele Sciannimanica",
