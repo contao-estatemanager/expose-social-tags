@@ -11,5 +11,7 @@ declare(strict_types=1);
  * @license    https://www.contao-estatemanager.com/lizenzbedingungen.html
  */
 
+use ContaoEstateManager\ExposeSocialTags\SocialTags;
+
 // HOOKS
-$GLOBALS['TL_HOOKS']['compileRealEstateExpose'][] = ['ContaoEstateManager\ExposeSocialTags\SocialTags', 'setSocialTags'];
+$GLOBALS['CEM_HOOKS']['compileRealEstateExpose'][] = [SocialTags::class, 'setSocialTags'];
