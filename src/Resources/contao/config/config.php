@@ -14,4 +14,4 @@ declare(strict_types=1);
 use ContaoEstateManager\ExposeSocialTags\SocialTags;
 
 // HOOKS
-$GLOBALS['CEM_HOOKS']['compileRealEstateExpose'][] = [SocialTags::class, 'setSocialTags'];
+$GLOBALS['TL_HOOKS']['compileRealEstateExpose'][] = [SocialTags::class, 'setSocialTags'];
