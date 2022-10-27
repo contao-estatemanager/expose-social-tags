@@ -1,11 +1,14 @@
 <?php
-/**
+
+declare(strict_types=1);
+
+/*
  * This file is part of Contao EstateManager.
  *
- * @link      https://www.contao-estatemanager.com/
- * @source    https://github.com/contao-estatemanager/expose-social-tags
- * @copyright Copyright (c) 2019  Oveleon GbR (https://www.oveleon.de)
- * @license   https://www.contao-estatemanager.com/lizenzbedingungen.html
+ * @see        https://www.contao-estatemanager.com/
+ * @source     https://github.com/contao-estatemanager/expose-social-tags
+ * @copyright  Copyright (c) 2021 Oveleon GbR (https://www.oveleon.de)
+ * @license    https://www.contao-estatemanager.com/lizenzbedingungen.html
  */
 
 namespace ContaoEstateManager\ExposeSocialTags;
@@ -21,7 +24,7 @@ use ContaoEstateManager\RealEstate;
 class SocialTags extends Controller
 {
     /**
-     * Set OpenGraph meta tags
+     * Set OpenGraph meta tags.
      *
      * @param $objTemplate
      * @param $objRealEstate
@@ -36,14 +39,16 @@ class SocialTags extends Controller
 
         $realEstate = new RealEstate($objRealEstate);
 
-        $objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid());
+        if (null === ($objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid())))
+        {
+            return;
+        }
 
-        $arrData = array
-        (
-            'singleSRC' => $objFile->path
-        );
+        $arrData = [
+            'singleSRC' => $objFile->path,
+        ];
 
-        if ($context->imgSize != '')
+        if ('' !== $context->imgSize)
         {
             $size = StringUtil::deserialize($context->imgSize);
 
@@ -58,16 +63,16 @@ class SocialTags extends Controller
         $picture = $objTemplate->picture['img'];
 
         $base = Environment::get('base');
-        $imageUrl = $base . $picture['src'];
-        $type = 'image/' . strtolower(FilesHelper::fileExt($picture['src']));
+        $imageUrl = $base.$picture['src'];
+        $type = 'image/'.strtolower(FilesHelper::fileExt($picture['src']));
         $width = $picture['width'];
         $height = $picture['height'];
-        $url = $base . Environment::get('request');
+        $url = $base.Environment::get('request');
         $arrTexts = $realEstate->getTexts(['objektbeschreibung'], 200);
 
         $description = '';
 
-        if(isset($arrTexts['objektbeschreibung']))
+        if (isset($arrTexts['objektbeschreibung']))
         {
             $description = $arrTexts['objektbeschreibung']['value'];
         }
