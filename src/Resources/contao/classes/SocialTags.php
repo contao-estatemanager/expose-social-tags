@@ -39,7 +39,10 @@ class SocialTags extends Controller
 
         $realEstate = new RealEstate($objRealEstate);
 
-        $objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid());
+        if (null === ($objFile = FilesModel::findOneByUuid($realEstate->getMainImageUuid())))
+        {
+            return;
+        }
 
         $arrData = [
             'singleSRC' => $objFile->path,
