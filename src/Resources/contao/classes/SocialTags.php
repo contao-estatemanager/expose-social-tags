@@ -18,6 +18,7 @@ use Contao\Environment;
 use Contao\FilesModel;
 use Contao\PageModel;
 use Contao\StringUtil;
+use Contao\System;
 use ContaoEstateManager\FilesHelper;
 use ContaoEstateManager\RealEstate;
 
@@ -44,6 +45,11 @@ class SocialTags extends Controller
             return;
         }
 
+        if (!file_exists(System::getContainer()->getParameter('kernel.project_dir') . '/' . $objFile->path))
+        {
+            return;
+        }
+
         $arrData = [
             'singleSRC' => $objFile->path,
         ];
@@ -64,9 +70,9 @@ class SocialTags extends Controller
 
         $base = Environment::get('base');
         $imageUrl = $base.$picture['src'];
-        $type = 'image/'.strtolower(FilesHelper::fileExt($picture['src']));
-        $width = $picture['width'];
-        $height = $picture['height'];
+        $type = 'image/'. strtolower(FilesHelper::fileExt($picture['src']));
+        $width = $picture['width'] ?? null;
+        $height = $picture['height'] ?? null;
         $url = $base.Environment::get('request');
         $arrTexts = $realEstate->getTexts(['objektbeschreibung'], 200);
 
